@@ -4,6 +4,10 @@ import { Cart } from "./cart.model"
 import httpStatus from "http-status";
 
 const createCartIntoDb = async (payload: TCart) => {
+    const isCartExits = await Cart.findById(payload.productId)
+    if (!isCartExits) {
+        throw new AppError(httpStatus.NOT_FOUND, "Already Added To Cart")
+    }
     const result = await Cart.create(payload)
     return result
 }
